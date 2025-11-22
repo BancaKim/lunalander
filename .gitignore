@@ -19,6 +19,9 @@ trained_videos/
 *.avi
 *.mov
 
+# Training logs (JSON data)
+training_logs/
+
 # macOS
 .DS_Store
 .AppleDouble

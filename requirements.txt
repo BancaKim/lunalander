@@ -5,3 +5,4 @@ gymnasium[box2d]
 moviepy>=1.0.3
 opencv-python>=4.8.0
 torch>=2.0.0
+matplotlib>=3.7.0

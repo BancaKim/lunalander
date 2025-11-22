@@ -1,33 +1,44 @@
-# LunarLander-v3 Double DQN Training
+# LunarLander-v3 DQN Algorithms Comparison
 
-Gymnasium 공식 LunarLander-v3 환경을 사용한 Double DQN 강화학습 프로젝트
+Gymnasium 공식 LunarLander-v3 환경에서 4개 DQN 알고리즘 비교 분석
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Gymnasium](https://img.shields.io/badge/gymnasium-0.29.0+-green.svg)](https://gymnasium.farama.org/)
 [![PyTorch](https://img.shields.io/badge/pytorch-2.0+-orange.svg)](https://pytorch.org/)
+[![Matplotlib](https://img.shields.io/badge/matplotlib-3.7+-red.svg)](https://matplotlib.org/)
 
 ---
 
 ## 🎯 프로젝트 개요
 
-OpenAI Gymnasium의 LunarLander-v3 환경에서 Double DQN 알고리즘을 사용하여 달 착륙선을 제어하는 에이전트를 학습합니다.
+OpenAI Gymnasium의 LunarLander-v3 환경에서 4개의 DQN 알고리즘을 비교 분석합니다:
+- **Vanilla DQN** - 기본 Deep Q-Network
+- **Double DQN** - Q-value 과대평가 방지
+- **Dueling DQN** - Value/Advantage 분리 아키텍처
+- **D3QN** - Dueling + Double DQN 결합
 
 ### 주요 특징
 
+- ✅ **4개 알고리즘 구현** - Vanilla, Double, Dueling, D3QN
 - ✅ **공식 Gymnasium 환경** - 검증된 물리 엔진과 보상 시스템
-- ✅ **Double DQN 알고리즘** - Q-value 과대평가 문제 해결
+- ✅ **시계열 시각화** - matplotlib 기반 학습 과정 비교 그래프
 - ✅ **자동 영상 녹화** - 학습 과정 및 테스트 결과 mp4 저장
-- ✅ **실시간 GUI** - pygame 창으로 학습 진행 상황 관찰
 - ✅ **체크포인트 저장** - 주기적 모델 저장 및 최고 성능 모델 관리
 
 ### 학습 성과
 
-- 🏆 **최고 보상**: 310.70
-- 📈 **최종 성공률**: 70-80% (200+ 보상 기준)
-- ⏱️ **학습 시간**: 1000 에피소드 약 7분 (Apple Silicon)
-- 🎯 **안정적 착륙**: Episode 500부터 일관된 성공
+| 알고리즘 | 최고 보상 | 최종 10-평균 | 최종 테스트 | 추천도 |
+|---------|----------|-------------|------------|--------|
+| **D3QN** | **316.88** 🏆 | **190.12** 🏆 | 150.28 | ⭐⭐⭐⭐⭐ |
+| **Double DQN** | 310.70 | 140.51 | **201.77** 🥈 | ⭐⭐⭐⭐⭐ |
+| **Vanilla DQN** | 308.03 | 38.77 | **233.87** 🥇 | ⭐⭐⭐ |
+| **Dueling DQN** | 301.77 | 71.93 | 165.68 | ⭐⭐⭐ |
+
+- ⏱️ **학습 시간**: 1000 에피소드 × 4 = 약 28분 (Apple Silicon)
+- 📊 **시각화**: 6종류의 비교 그래프 제공
 
 상세한 학습 결과는 [TRAINING_RESULTS.md](TRAINING_RESULTS.md)를 참고하세요.
+시각화 가이드는 [VISUALIZATION_GUIDE.md](VISUALIZATION_GUIDE.md)를 참고하세요.
 
 ---
 
@@ -117,34 +128,48 @@ python train.py 500 d3qn --show-gui
 
 ---
 
-## 📊 학습 결과
+## 📊 학습 결과 및 시각화
+
+### 📈 시계열 비교 그래프
+
+**6종류의 비교 시각화가 자동 생성됩니다:**
+
+1. **학습 곡선** - 평균 보상 및 최고 보상 추이
+2. **테스트 성능** - 매 100 에피소드 테스트 결과
+3. **Loss 추이** - 학습 안정성 분석
+4. **Epsilon 감소** - 탐험율 변화
+5. **최종 비교** - 막대 그래프로 종합 성능 비교
+6. **성공률** - 100 에피소드 단위 성공률 변화
+
+**시각화 생성 방법:**
+```bash
+# 1. 기존 데이터를 JSON으로 변환
+python convert_existing_data.py
+
+# 2. 그래프 생성
+python visualize.py
+```
+
+생성된 시각화는 `visualizations/` 디렉토리에 저장됩니다.
+상세 가이드: [VISUALIZATION_GUIDE.md](VISUALIZATION_GUIDE.md)
+
+---
 
 ### 최종 성과 (1000 에피소드)
 
-| 지표 | 값 |
-|------|-----|
-| 최고 보상 | **310.70** |
-| 최종 10 에피소드 평균 | **140.51** |
-| 성공률 (200+ 보상) | **70-80%** |
-| 학습 시간 | **~7분** (Apple Silicon) |
+**알고리즘별 비교:**
 
-### 학습 곡선
+| 알고리즘 | 최고 보상 | 최종 10-평균 | 최종 테스트 | 학습 시간 |
+|---------|----------|-------------|------------|----------|
+| D3QN | 316.88 🏆 | 190.12 🏆 | 150.28 | ~7분 |
+| Double DQN | 310.70 | 140.51 | 201.77 🥈 | ~7분 |
+| Vanilla DQN | 308.03 | 38.77 | 233.87 🥇 | ~7분 |
+| Dueling DQN | 301.77 | 71.93 | 165.68 | ~7분 |
 
-```
-Episode  100: Avg Reward = -117.98 (초기 탐색)
-Episode  300: Avg Reward =  -18.00 (개선 시작)
-Episode  500: Avg Reward =  -17.39 (첫 성공적 착륙)
-Episode  700: Avg Reward =  195.88 (안정화)
-Episode  980: Avg Reward =  261.94 (마스터 단계)
-```
-
-### 테스트 결과
-
-**최종 테스트 (Best Model, 3회):**
-- Test 1: 219.52 (✅ 성공)
-- Test 2: 193.40 (✅ 성공)
-- Test 3: 192.39 (✅ 성공)
-- **평균: 201.77 / 100% 성공률**
+**핵심 발견:**
+- ⭐ **D3QN**: 가장 안정적인 학습 (190.12 최종 평균)
+- ⭐ **Double DQN**: 가장 높은 최종 테스트 성공률 (100%)
+- ⭐ **Vanilla DQN**: 최고 테스트 성능 (233.87) 하지만 불안정
 
 상세한 분석은 [TRAINING_RESULTS.md](TRAINING_RESULTS.md)를 참고하세요.
 
