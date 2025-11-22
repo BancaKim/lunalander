@@ -1,0 +1,7 @@
+gymnasium>=0.29.0
+pygame>=2.5.0
+numpy>=1.24.0
+gymnasium[box2d]
+moviepy>=1.0.3
+opencv-python>=4.8.0
+torch>=2.0.0
